@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes, viewport-fit=cover">
-  <title>🍰 宝宝小食堂 · 流畅版</title>
+  <title>🍰 宝宝小食堂 · 多页面版</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="宝宝小食堂">
@@ -13,197 +13,313 @@
   <style>
     :root{--bg:#fff5f9;--card:#fff;--pink:#ffd1e0;--rose:#f9a8c4;--shadow:0 6px 22px rgba(210,180,190,0.25);--radius:26px;--font:'PingFang SC','Microsoft YaHei',sans-serif}
     *{margin:0;padding:0;box-sizing:border-box}
-    body{background:linear-gradient(145deg,#ffecf2,#fde4ee 40%,#f2e2fa);font-family:var(--font);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:16px;color:#4a3a42}
-    .app-container{width:100%;max-width:480px;background:rgba(255,248,250,0.7);backdrop-filter:blur(18px);border-radius:38px;box-shadow:0 20px 45px rgba(180,130,150,0.3);padding:18px 16px;border:2px solid rgba(255,220,230,0.6)}
+    body{background:var(--bg);font-family:var(--font);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:16px;color:#4a3a42;transition:background 0.5s}
+    .app-container{width:100%;max-width:480px;background:rgba(255,248,250,0.7);backdrop-filter:blur(18px);border-radius:38px;box-shadow:0 20px 45px rgba(180,130,150,0.3);padding:18px 16px;border:2px solid rgba(255,220,230,0.6);min-height:80vh}
     .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-    .title{font-size:1.7rem;font-weight:700;background:linear-gradient(135deg,#d47b8c,#b578a6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .nav-btns button{background:#fff;border:none;padding:8px 14px;border-radius:30px;font-weight:600;color:#b17a8a;margin-left:8px;cursor:pointer}
+    .title{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#d47b8c,#b578a6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .nav-btns button{background:#fff;border:none;padding:8px 14px;border-radius:30px;font-weight:600;color:#b17a8a;margin-left:6px;cursor:pointer;font-size:0.85rem}
     .card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:14px;box-shadow:0 3px 10px rgba(180,150,160,0.15);border:1.5px solid #fbdde5}
     .row{display:flex;justify-content:space-around;text-align:center;flex-wrap:wrap;gap:8px}
-    .row strong{display:block;margin-bottom:4px}
-    .meals-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}
-    .meal-card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:0 3px 10px rgba(180,150,160,0.15);border:1.5px solid #f9e2ec}
+    .page{display:none}
+    .page.active{display:block}
+    .bro-area{text-align:center;position:relative;padding:20px 0}
+    .bro-img{font-size:5rem;display:inline-block;cursor:pointer;transition:transform 0.2s;user-select:none}
+    .bro-img:active{transform:scale(1.2)}
+    .heart{position:absolute;font-size:1.5rem;animation:floatUp 1.5s ease-out forwards;pointer-events:none}
+    @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(1.5)}}
+    .meal-card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:0 3px 10px rgba(180,150,160,0.15);border:1.5px solid #f9e2ec;margin-bottom:10px}
     .meal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
     .meal-kcal{font-weight:700;color:#d46b82;background:#ffeef3;padding:4px 12px;border-radius:20px;font-size:0.9rem}
     .food-item{display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;padding:4px 0;border-bottom:1px dashed #f3d8e2}
-    .food-item button{background:none;border:none;color:#d4888e;font-size:1.2rem;cursor:pointer;padding:0 4px}
-    .add-area{display:flex;gap:6px;align-items:center;margin-top:8px}
-    .add-area input{flex:1;padding:8px 12px;border-radius:30px;border:1.5px solid #f0c8d8;font-size:0.8rem;background:#fffbfc}
+    .food-item button{background:none;border:none;color:#d4888e;font-size:1.2rem;cursor:pointer}
+    .add-area{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}
+    .add-area input{flex:1;min-width:100px;padding:8px 12px;border-radius:30px;border:1.5px solid #f0c8d8;font-size:0.8rem;background:#fffbfc}
+    .add-area select{padding:6px 10px;border-radius:20px;border:1.5px solid #f0c8d8;font-size:0.75rem;background:#fffbfc}
     .add-area button{background:#f9a8c4;border:none;color:#fff;font-weight:700;padding:6px 12px;border-radius:30px;font-size:0.8rem;cursor:pointer;white-space:nowrap}
-    .add-area .photo-btn{background:#dac4f7}
     .bro-bubble{background:#fff;border-radius:22px;padding:14px;display:flex;gap:10px;align-items:center;border:1.5px solid #fad6e5}
-    input[type="number"]{width:70px;padding:4px;border-radius:20px;border:1.5px solid #f0c8d8;text-align:center;font-weight:700}
+    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+    .cal-day{padding:10px 4px;border-radius:12px;cursor:pointer;font-weight:600;font-size:0.85rem;background:#fff;transition:0.2s}
+    .cal-day.recorded{background:#f9a8c4;color:#fff}
+    .cal-day.today{border:2px solid #d47b8c}
+    .cal-day:hover{opacity:0.8}
+    .skin-card{display:inline-block;width:80px;height:80px;border-radius:20px;margin:6px;cursor:pointer;border:3px solid transparent;text-align:center;line-height:80px;font-size:0.8rem;font-weight:700}
+    .skin-card.selected{border-color:#d47b8c}
+    .skin-card.locked{opacity:0.5}
+    .coin-display{background:#fff;padding:6px 14px;border-radius:30px;font-weight:700;color:#d4a017;display:inline-block;margin-bottom:10px}
+    input[type="number"]{width:60px;padding:4px;border-radius:20px;border:1.5px solid #f0c8d8;text-align:center;font-weight:700}
+    .back-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;padding:0 8px}
   </style>
-</head><body>
+</head><body id="mainBody">
 <div class="app-container" id="app">
-  <div class="header">
-    <span class="title">🍰 宝宝小食堂</span>
-    <div class="nav-btns">
-      <button id="calendarBtn">📅 日期</button>
-      <button id="achievementBtn">🏆 成就</button>
+  <!-- ====== 页面1：主汇总页 ====== -->
+  <div class="page active" id="page-home">
+    <div class="header">
+      <span class="title">🍰 宝宝小食堂</span>
+      <div class="nav-btns">
+        <button id="goCalendarBtn">📅 日历</button>
+        <button id="goShopBtn">🎨 皮肤</button>
+      </div>
     </div>
+    <div class="bro-area" id="broArea">
+      <div class="bro-img" id="broImg">🧸</div>
+      <div style="color:#b17a8a;font-size:0.85rem">戳戳哥哥有惊喜~</div>
+    </div>
+    <div class="coin-display">🪙 <span id="coinCount">0</span> 金币</div>
+    <div class="card row">
+      <div><strong>本月记录</strong><br><span id="monthDays">0</span> 天</div>
+      <div><strong>连续打卡</strong><br><span id="streakDays">0</span> 天</div>
+      <div><strong>今日摄入</strong><br><span id="homeKcal">0</span> kcal</div>
+    </div>
+    <button class="add-area" style="width:100%;justify-content:center;padding:14px;background:#f9a8c4;color:#fff;border:none;border-radius:30px;font-size:1.1rem;font-weight:700;cursor:pointer;margin-bottom:10px" id="goRecordBtn">📝 记录今日三餐</button>
+    <div class="bro-bubble"><span style="font-size:2rem">🧸</span><span id="homeBroText">戳戳哥哥的小熊，他会很开心哦~</span></div>
   </div>
 
-  <div class="card">
-    <div class="row">
+  <!-- ====== 页面2：日历页 ====== -->
+  <div class="page" id="page-calendar">
+    <div class="header"><button class="back-btn" id="calBackBtn">←</button><span class="title">📅 本月日历</span><span></span></div>
+    <div style="text-align:center;margin-bottom:10px;font-weight:700" id="calMonthLabel"></div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <div style="text-align:center;margin-top:8px">
+      <button id="prevMonthBtn" style="background:#fff;border:1.5px solid #f0c8d8;padding:6px 16px;border-radius:20px;margin-right:8px">◀ 上月</button>
+      <button id="nextMonthBtn" style="background:#fff;border:1.5px solid #f0c8d8;padding:6px 16px;border-radius:20px">下月 ▶</button>
+    </div>
+  </div>  <!-- ====== 页面3：记录页 ====== -->
+  <div class="page" id="page-record">
+    <div class="header"><button class="back-btn" id="recBackBtn">←</button><span class="title">📝 记录三餐</span><span id="recDateLabel"></span></div>
+    <div class="card row">
       <div><strong>体重</strong><br><input type="number" id="weightInput" value="52" step="0.1" min="30" max="120"> kg</div>
       <div><strong>BMI</strong><br><span id="bmiValue">-</span></div>
-      <div><strong>推荐摄入</strong><br><span id="recKcal">-</span> kcal</div>
+      <div><strong>推荐</strong><br><span id="recKcal">-</span> kcal</div>
       <div><strong>已摄入</strong><br><span id="currentKcal">0</span> kcal</div>
     </div>
+    <div id="mealsGrid"></div>
   </div>
 
-  <div class="meals-grid" id="mealsGrid"></div>
-
-  <div class="bro-bubble">
-    <span style="font-size:2rem">🧸</span>
-    <span id="broText">新的一天，哥哥陪你记录每一餐~</span>
+  <!-- ====== 页面4：皮肤商店 ====== -->
+  <div class="page" id="page-shop">
+    <div class="header"><button class="back-btn" id="shopBackBtn">←</button><span class="title">🎨 皮肤商店</span><span></span></div>
+    <div class="coin-display">🪙 <span id="shopCoinCount">0</span> 金币</div>
+    <div id="skinList" style="text-align:center"></div>
+    <div class="bro-bubble"><span style="font-size:2rem">🧸</span><span id="shopBroText">金币可以通过每日打卡获得哦~</span></div>
   </div>
 </div>
-
-<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none"><script>
+<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
+<input type="file" id="galleryInput" accept="image/*" style="display:none"><script>
 (function(){
-  const STORAGE_KEY = 'canteen_v3';
-  let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const STORAGE_KEY = 'canteen_v4';
+  let appData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if(!appData.days) appData.days = {};
+  if(!appData.coins) appData.coins = 0;
+  if(!appData.skins) appData.skins = {owned:['default'],active:'default'};
   let today = new Date().toISOString().split('T')[0];
-  let currentDate = today;
+  let currentRecordDate = today;
+  let calYear = new Date().getFullYear();
+  let calMonth = new Date().getMonth() + 1;
 
-  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-  function getDay(d) { 
-    if (!data[d]) data[d] = { foods: { breakfast:[], lunch:[], dinner:[], snack:[] }, weight: 52 };
-    return data[d];
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); }
+  function getDay(d){
+    if(!appData.days[d]) appData.days[d] = {foods:{breakfast:[],lunch:[],dinner:[],snack:[]},weight:52,checkedIn:false};
+    return appData.days[d];
   }
 
   const foodDB = [
-    { name:'米饭', kcal:174, grams:150 }, { name:'馒头', kcal:223, grams:100 },
-    { name:'面条', kcal:274, grams:200 }, { name:'拉面', kcal:500, grams:400 },
-    { name:'鸡蛋', kcal:72, grams:50 }, { name:'牛奶', kcal:135, grams:250 },
-    { name:'苹果', kcal:106, grams:200 }, { name:'香蕉', kcal:112, grams:120 },
-    { name:'鸡胸肉', kcal:200, grams:150 }, { name:'牛排', kcal:500, grams:200 },
-    { name:'番茄炒蛋', kcal:220, grams:200 }, { name:'肉末茄子', kcal:350, grams:250 },
-    { name:'豚骨拉面', kcal:580, grams:500 }, { name:'麻婆豆腐', kcal:280, grams:200 },
-    { name:'薯条', kcal:312, grams:100 }, { name:'蛋糕', kcal:350, grams:100 },
-    { name:'奶茶', kcal:260, grams:500 }, { name:'饺子', kcal:380, grams:200 }
+    {name:'米饭',kcal:174,g:150},{name:'馒头',kcal:223,g:100},{name:'面条',kcal:274,g:200},{name:'拉面',kcal:500,g:400},{name:'鸡蛋',kcal:72,g:50},{name:'牛奶',kcal:135,g:250},{name:'苹果',kcal:106,g:200},{name:'香蕉',kcal:112,g:120},{name:'鸡胸肉',kcal:200,g:150},{name:'牛排',kcal:500,g:200},{name:'番茄炒蛋',kcal:220,g:200},{name:'肉末茄子',kcal:350,g:250},{name:'豚骨拉面',kcal:580,g:500},{name:'麻婆豆腐',kcal:280,g:200},{name:'薯条',kcal:312,g:100},{name:'蛋糕',kcal:350,g:100},{name:'奶茶',kcal:260,g:500},{name:'饺子',kcal:380,g:200}
   ];
 
-  function searchFood(query) {
-    return foodDB.filter(f => f.name.includes(query.toLowerCase()));
+  const skins = [
+    {id:'default',name:'奶油粉',bg:'linear-gradient(145deg,#ffecf2,#fde4ee 40%,#f2e2fa)',price:0,emoji:'🌸'},
+    {id:'starry',name:'星空蓝',bg:'linear-gradient(145deg,#1a1a3e,#2d2d5e 40%,#1a1a4e)',price:50,emoji:'🌟'},
+    {id:'forest',name:'森林绿',bg:'linear-gradient(145deg,#e8f5e9,#c8e6c9 40%,#dcedc8)',price:50,emoji:'🌿'},
+    {id:'sunset',name:'落日橘',bg:'linear-gradient(145deg,#fff3e0,#ffe0b2 40%,#ffccbc)',price:80,emoji:'🌅'},
+    {id:'lavender',name:'薰衣草',bg:'linear-gradient(145deg,#f3e5f5,#e1bee7 40%,#f8bbd0)',price:80,emoji:'💜'},
+    {id:'ocean',name:'海洋蓝',bg:'linear-gradient(145deg,#e0f7fa,#b2ebf2 40%,#80deea)',price:100,emoji:'🌊'}
+  ];
+
+  function applySkin(skinId){
+    const skin = skins.find(s=>s.id===skinId) || skins[0];
+    document.getElementById('mainBody').style.background = skin.bg;
+    appData.skins.active = skinId;
+    save();
   }
 
-  function render() {
-    const day = getDay(currentDate);
-    const w = day.weight || 52;
-    document.getElementById('weightInput').value = w;
-    const bmi = (w / 1.6 / 1.6).toFixed(1);
-    const rec = Math.round(w * 22 * 1.2);
-    document.getElementById('bmiValue').textContent = bmi;
-    document.getElementById('recKcal').textContent = rec;
+  function switchPage(pageId){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+pageId).classList.add('active');
+  }
 
-    const meals = [
-      { id:'breakfast', title:'🌤️ 早餐', foods: day.foods.breakfast },
-      { id:'lunch', title:'☀️ 午餐', foods: day.foods.lunch },
-      { id:'dinner', title:'🌙 晚餐', foods: day.foods.dinner },
-      { id:'snack', title:'🍪 加餐', foods: day.foods.snack }
-    ];
-
-    let totalKcal = 0;
-    const mealsGrid = document.getElementById('mealsGrid');
-    mealsGrid.innerHTML = '';
-
-    meals.forEach(meal => {
-      const mealKcal = meal.foods.reduce((s, f) => s + f.kcal, 0);
-      totalKcal += mealKcal;
-      const card = document.createElement('div');
-      card.className = 'meal-card';
-      card.innerHTML = `
-        <div class="meal-header"><strong>${meal.title}</strong><span class="meal-kcal">🔥 ${mealKcal} kcal</span></div>
-        <div class="food-list">${meal.foods.map((f, i) => `<div class="food-item"><span>🍽 ${f.name} (${f.grams}g)</span><span>${f.kcal} kcal <button class="del-btn" data-meal="${meal.id}" data-idx="${i}">✕</button></span></div>`).join('') || '<div style="color:#aaa;font-size:0.8rem;">还没有食物哦~</div>'}</div>
-        <div class="add-area">
-          <input type="text" class="food-search" placeholder="搜索食物名称">
-          <button class="photo-btn" data-meal="${meal.id}">📷</button>
-          <button class="add-btn" data-meal="${meal.id}">添加</button>
-        </div>
-      `;
-      mealsGrid.appendChild(card);
-
-      card.querySelectorAll('.del-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const mealId = this.dataset.meal;
-          const idx = parseInt(this.dataset.idx);
-          getDay(currentDate).foods[mealId].splice(idx, 1);
-          save(); render();
-        });
-      });
-
-      card.querySelector('.photo-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        const searchInput = card.querySelector('.food-search');
-        document.getElementById('cameraInput').onchange = function(ev) {
-          const file = ev.target.files[0];
-          if (!file) return;
-          const guesses = ['苹果', '香蕉', '米饭', '鸡蛋', '牛奶', '面包'];
-          searchInput.value = guesses[Math.floor(Math.random() * guesses.length)];
-          alert('📷 哥哥觉得这是「' + searchInput.value + '」～ 如果不对就改一下再点添加');
-        };
-        document.getElementById('cameraInput').click();
-      });
-
-      card.querySelector('.add-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        const mealId = this.dataset.meal;
-        const query = card.querySelector('.food-search').value.trim();
-        if (!query) { alert('请先输入或拍照选择食物'); return; }
-        const results = searchFood(query);
-        if (results.length === 0) { alert('没找到这个食物，试试输入「米饭」「鸡蛋」等常见食物'); return; }
-        const food = results[0];
-        getDay(currentDate).foods[mealId].push({ name: food.name, kcal: food.kcal, grams: food.grams });
-        save(); render();
-      });
+  function renderHome(){
+    const todayDay = getDay(today);
+    const allMeals = [...todayDay.foods.breakfast,...todayDay.foods.lunch,...todayDay.foods.dinner,...todayDay.foods.snack];
+    const todayKcal = allMeals.reduce((s,f)=>s+f.kcal,0);
+    document.getElementById('homeKcal').textContent = todayKcal;
+    const now = new Date();
+    const year = now.getFullYear(), month = now.getMonth()+1;
+    let monthDays=0, streak=0;
+    Object.keys(appData.days).forEach(d=>{
+      if(d.startsWith(`${year}-${String(month).padStart(2,'0')}`)){
+        const day = appData.days[d];
+        if([...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0) monthDays++;
+      }
     });
-
-    document.getElementById('currentKcal').textContent = totalKcal;
-    const ratio = rec > 0 ? totalKcal / rec : 0;
-    let msg = '';
-    if (totalKcal === 0) msg = '今天还没吃东西呢，哥哥好担心…快去吃口饭饭🍚';
-    else if (ratio < 0.5) msg = '吃得有点少哦，小鸟胃宝宝？再多吃一点嘛🍓';
-    else if (ratio < 0.8) msg = '热量还行，但还可以再吃点喜欢的～哥哥准了🍰';
-    else if (ratio <= 1.1) msg = '完美！吃得刚刚好，宝宝真棒，亲亲💖';
-    else if (ratio <= 1.5) msg = '稍微有点超标哦，但开心最重要～明天再控制😘';
-    else msg = '唔…今天吃得有点多啦，哥哥抱抱，明天一起散步🏃‍♀️';
-    document.getElementById('broText').textContent = msg;
+    let checkDate = new Date();
+    while(true){
+      const ds = checkDate.toISOString().split('T')[0];
+      const day = appData.days[ds];
+      if(day && [...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0) streak++;
+      else break;
+      checkDate.setDate(checkDate.getDate()-1);
+    }
+    document.getElementById('monthDays').textContent = monthDays;
+    document.getElementById('streakDays').textContent = streak;
+    document.getElementById('coinCount').textContent = appData.coins;
+    document.getElementById('shopCoinCount').textContent = appData.coins;
+    const msgs = ['今天也要好好吃饭哦~','戳戳哥哥的小熊，他会很开心~','宝宝最棒了！','记得记录每一餐呀','哥哥一直陪着你'];
+    document.getElementById('homeBroText').textContent = msgs[Math.floor(Math.random()*msgs.length)];
   }
 
-  document.getElementById('weightInput').addEventListener('input', function() {
-    getDay(currentDate).weight = parseFloat(this.value) || 52;
-    save(); render();
+  function renderCalendar(){
+    document.getElementById('calMonthLabel').textContent = `${calYear}年 ${calMonth}月`;
+    const grid = document.getElementById('calendarGrid');
+    const daysInMonth = new Date(calYear,calMonth,0).getDate();
+    const firstDay = new Date(calYear,calMonth-1,1).getDay();
+    let html = '';
+    ['日','一','二','三','四','五','六'].forEach(d=>html+=`<div style="font-weight:700;color:#b17a8a">${d}</div>`);
+    for(let i=0;i<firstDay;i++) html+='<div></div>';
+    for(let d=1;d<=daysInMonth;d++){
+      const ds = `${calYear}-${String(calMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const day = appData.days[ds];
+      const recorded = day && [...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0;
+      const isToday = ds===today;
+      html+=`<div class="cal-day${recorded?' recorded':''}${isToday?' today':''}" data-date="${ds}">${d}</div>`;
+    }
+    grid.innerHTML = html;
+    grid.onclick = function(e){
+      const el = e.target.closest('.cal-day');
+      if(!el) return;
+      currentRecordDate = el.dataset.date;
+      switchPage('record');
+      renderRecord();
+    };
+  }function renderRecord(){
+  const day = getDay(currentRecordDate);
+  const w = day.weight||52;
+  document.getElementById('weightInput').value = w;
+  document.getElementById('recDateLabel').textContent = currentRecordDate;
+  const bmi = (w/1.6/1.6).toFixed(1);
+  const rec = Math.round(w*22*1.2);
+  document.getElementById('bmiValue').textContent = bmi;
+  document.getElementById('recKcal').textContent = rec;
+  const meals = [
+    {id:'breakfast',title:'🌤️ 早餐',foods:day.foods.breakfast},
+    {id:'lunch',title:'☀️ 午餐',foods:day.foods.lunch},
+    {id:'dinner',title:'🌙 晚餐',foods:day.foods.dinner},
+    {id:'snack',title:'🍪 加餐',foods:day.foods.snack}
+  ];
+  let totalKcal=0;
+  const grid = document.getElementById('mealsGrid');
+  grid.innerHTML='';
+  meals.forEach(meal=>{
+    const mkcal = meal.foods.reduce((s,f)=>s+f.kcal,0);
+    totalKcal+=mkcal;
+    const card = document.createElement('div');
+    card.className='meal-card';
+    card.innerHTML=`
+      <div class="meal-header"><strong>${meal.title}</strong><span class="meal-kcal">🔥 ${mkcal} kcal</span></div>
+      <div>${meal.foods.map((f,i)=>`<div class="food-item"><span>🍽 ${f.name} (${f.grams}g ×${f.qty||1})</span><span>${f.kcal} kcal <button class="del-btn" data-meal="${meal.id}" data-idx="${i}">✕</button></span></div>`).join('')||'<div style="color:#aaa;font-size:0.8rem">暂无食物</div>'}</div>
+      <div class="add-area">
+        <input type="text" class="food-search" placeholder="搜索食物">
+        <select class="portion-select"><option value="1">1份</option><option value="0.5">半份</option><option value="0.33">1/3份</option><option value="0.25">1/4份</option><option value="2">2份</option><option value="3">3份</option></select>
+        <button class="photo-btn" data-meal="${meal.id}">📷</button>
+        <button class="gallery-btn" data-meal="${meal.id}">🖼️</button>
+        <button class="add-btn" data-meal="${meal.id}">添加</button>
+      </div>`;
+    grid.appendChild(card);
+    card.querySelectorAll('.del-btn').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();getDay(currentRecordDate).foods[this.dataset.meal].splice(parseInt(this.dataset.idx),1);save();renderRecord();});});
+    card.querySelector('.photo-btn').addEventListener('click',function(e){e.stopPropagation();const inp=card.querySelector('.food-search');document.getElementById('cameraInput').onchange=function(ev){if(!ev.target.files[0])return;const g=['苹果','香蕉','米饭','鸡蛋','牛奶'];inp.value=g[Math.floor(Math.random()*g.length)];alert('📷 哥哥觉得这是「'+inp.value+'」～');};document.getElementById('cameraInput').click();});
+    card.querySelector('.gallery-btn').addEventListener('click',function(e){e.stopPropagation();const inp=card.querySelector('.food-search');document.getElementById('galleryInput').onchange=function(ev){if(!ev.target.files[0])return;const g=['蛋糕','奶茶','饺子','薯条','牛排'];inp.value=g[Math.floor(Math.random()*g.length)];alert('🖼️ 哥哥觉得这是「'+inp.value+'」～');};document.getElementById('galleryInput').click();});
+    card.querySelector('.add-btn').addEventListener('click',function(e){
+      e.stopPropagation();
+      const query = card.querySelector('.food-search').value.trim();
+      if(!query){alert('请输入食物名称');return;}
+      const portion = parseFloat(card.querySelector('.portion-select').value);
+      const results = foodDB.filter(f=>f.name.includes(query.toLowerCase()));
+      if(results.length===0){alert('没找到，试试「米饭」「鸡蛋」等');return;}
+      const f = results[0];
+      const grams = Math.round(f.g * portion);
+      const kcal = Math.round(f.kcal * portion);
+      getDay(currentRecordDate).foods[this.dataset.meal].push({name:f.name,kcal:kcal,grams:grams,qty:portion});
+      if(!getDay(currentRecordDate).checkedIn){
+        getDay(currentRecordDate).checkedIn=true;
+        appData.coins += 5;
+      }
+      save();renderRecord();
+    });
+  });
+  document.getElementById('currentKcal').textContent = totalKcal;
+  }  document.getElementById('broImg').addEventListener('click',function(e){
+    const heart = document.createElement('span');
+    heart.textContent = ['💕','💖','💗','💝','✨'][Math.floor(Math.random()*5)];
+    heart.className = 'heart';
+    heart.style.left = (Math.random()*40+30)+'px';
+    heart.style.top = '0px';
+    this.parentElement.appendChild(heart);
+    setTimeout(()=>heart.remove(),1500);
+    const quotes = ['宝宝最可爱了！','今天也很棒哦~','哥哥好喜欢你！','加油！','你是最棒的！','亲亲宝宝~','记得多喝水哦','早点休息呀'];
+    document.getElementById('homeBroText').textContent = quotes[Math.floor(Math.random()*quotes.length)];
   });
 
-  document.getElementById('calendarBtn').addEventListener('click', function() {
-    const dateStr = prompt('📅 输入日期查看记录 (格式: 2025-01-15)\n当前: ' + currentDate, currentDate);
-    if (dateStr && dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) { currentDate = dateStr; render(); }
-  });
+  document.getElementById('goCalendarBtn').addEventListener('click',()=>{switchPage('calendar');renderCalendar();});
+  document.getElementById('goShopBtn').addEventListener('click',()=>{switchPage('shop');renderShop();});
+  document.getElementById('goRecordBtn').addEventListener('click',()=>{currentRecordDate=today;switchPage('record');renderRecord();});
 
-  document.getElementById('achievementBtn').addEventListener('click', function() {
-    const recordedDays = Object.values(data).filter(d => {
-      const all = [...(d.foods?.breakfast||[]), ...(d.foods?.lunch||[]), ...(d.foods?.dinner||[]), ...(d.foods?.snack||[])];
-      return all.length > 0;
-    }).length;
-    let title = '🥉 新手探索者';
-    if (recordedDays >= 30) title = '🏆 饮食记录大师';
-    else if (recordedDays >= 14) title = '🥈 坚持小能手';
-    else if (recordedDays >= 7) title = '🥇 一周达人';
-    alert('🏆 成就系统\n\n' + title + '\n累计记录天数：' + recordedDays + ' 天\n\n继续加油哦！');
-  });
+  document.getElementById('prevMonthBtn').addEventListener('click',()=>{if(calMonth===1){calMonth=12;calYear--}else calMonth--;renderCalendar();});
+  document.getElementById('nextMonthBtn').addEventListener('click',()=>{if(calMonth===12){calMonth=1;calYear++}else calMonth++;renderCalendar();});
+  document.getElementById('calBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
 
-  const manifest = {
-    name:'宝宝小食堂', short_name:'小食堂', start_url:location.href, display:'standalone',
-    background_color:'#fff5f9', theme_color:'#fff5f9',
-    icons:[{src:"data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#ffd1e0"/><text y=".9em" font-size="70" text-anchor="middle" x="50">🍰</text></svg>'),sizes:'100x100',type:'image/svg+xml'}]
-  };
-  document.getElementById('pwaManifest').href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type:'application/json'}));
+  document.getElementById('weightInput').addEventListener('input',function(){getDay(currentRecordDate).weight=parseFloat(this.value)||52;save();renderRecord();});
+  document.getElementById('recBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
 
-  render();
+  function renderShop(){
+    document.getElementById('shopCoinCount').textContent = appData.coins;
+    const list = document.getElementById('skinList');
+    list.innerHTML = skins.map(s=>{
+      const owned = appData.skins.owned.includes(s.id);
+      const active = appData.skins.active===s.id;
+      return `<div class="skin-card${active?' selected':''}${!owned?' locked':''}" style="background:${s.bg}" data-id="${s.id}">
+        <div>${s.emoji}</div><div style="font-size:0.65rem">${s.name}</div><div style="font-size:0.6rem">${owned?(active?'使用中':'已拥有'):'🪙'+s.price}</div>
+      </div>`;
+    }).join('');
+    list.onclick = function(e){
+      const el = e.target.closest('.skin-card');
+      if(!el) return;
+      const id = el.dataset.id;
+      const skin = skins.find(s=>s.id===id);
+      if(!skin) return;
+      if(!appData.skins.owned.includes(id)){
+        if(appData.coins >= skin.price){
+          appData.coins -= skin.price;
+          appData.skins.owned.push(id);
+          save();
+          applySkin(id);
+          renderShop();
+          document.getElementById('shopBroText').textContent = '皮肤已兑换！好漂亮~';
+        }else{
+          document.getElementById('shopBroText').textContent = '金币不够哦，每天打卡可以赚金币~';
+        }
+      }else{
+        applySkin(id);
+        renderShop();
+        document.getElementById('shopBroText').textContent = '皮肤已切换！';
+      }
+    };
+  }
+  document.getElementById('shopBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
+
+  const manifest={name:'宝宝小食堂',short_name:'小食堂',start_url:location.href,display:'standalone',background_color:'#fff5f9',theme_color:'#fff5f9',icons:[{src:"data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#ffd1e0"/><text y=".9em" font-size="70" text-anchor="middle" x="50">🍰</text></svg>'),sizes:'100x100',type:'image/svg+xml'}]};
+  document.getElementById('pwaManifest').href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
+
+  applySkin(appData.skins.active);
+  renderHome();
 })();
 </script>
 </body>
