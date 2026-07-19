@@ -566,7 +566,9 @@ document.getElementById('settingsModal').addEventListener('click', function(e){
 
 // 强制隐藏弹窗（启动时）
 document.getElementById('settingsModal').classList.add('hidden');
-});  // 背景照片：拍照
+});  
+
+  // 背景照片：拍照
   document.getElementById('photoFromCamera').addEventListener('click',function(){
     document.getElementById('bgPhotoInput').onchange = function(ev){
       const file = ev.target.files[0];
