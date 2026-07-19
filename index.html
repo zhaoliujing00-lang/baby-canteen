@@ -526,12 +526,44 @@ document.getElementById('shopBackBtn').addEventListener('click',()=>{switchPage(
 document.getElementById('openSettingsBtn').addEventListener('click',openSettings);
 document.getElementById('closeSettingsBtn').addEventListener('click',closeSettings);
 document.getElementById('settingsModal').addEventListener('click',function(e){if(e.target===this)closeSettings();});
-
 // 照片模式切换
 document.getElementById('photoMode').addEventListener('change',function(){
   appData.photoMode = this.value;
   save();
   applyBgPhoto();
+});
+
+// ========== 设置弹窗控制（修复版） ==========
+function openSettings(){
+  document.getElementById('photoMode').value = appData.photoMode;
+  renderEffectList();
+  document.getElementById('settingsModal').classList.remove('hidden');
+}
+
+function closeSettings(){
+  document.getElementById('settingsModal').classList.add('hidden');
+}
+
+// 强制隐藏弹窗，确保启动时不会弹出来
+document.getElementById('settingsModal').classList.add('hidden');
+
+// 绑定打开按钮
+document.getElementById('openSettingsBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  openSettings();
+});
+
+// 绑定关闭按钮
+document.getElementById('closeSettingsBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  closeSettings();
+});
+
+// 点击弹窗背景灰色区域也能关闭
+document.getElementById('settingsModal').addEventListener('click', function(e){
+  if(e.target === document.getElementById('settingsModal')){
+    closeSettings();
+  }
 });
 
 // ========== 设置弹窗控制 ==========
@@ -568,7 +600,7 @@ document.getElementById('settingsModal').addEventListener('click', function(e){
 document.getElementById('settingsModal').classList.add('hidden');
 });  
 
-  // 背景照片：拍照
+    // 背景照片：拍照
   document.getElementById('photoFromCamera').addEventListener('click',function(){
     document.getElementById('bgPhotoInput').onchange = function(ev){
       const file = ev.target.files[0];
@@ -626,4 +658,4 @@ document.getElementById('settingsModal').classList.add('hidden');
 })();
 </script>
 </body>
-</html>
+</html> 
