@@ -532,6 +532,40 @@ document.getElementById('photoMode').addEventListener('change',function(){
   appData.photoMode = this.value;
   save();
   applyBgPhoto();
+});
+
+// ========== 设置弹窗控制 ==========
+function openSettings(){
+  document.getElementById('photoMode').value = appData.photoMode;
+  renderEffectList();
+  document.getElementById('settingsModal').classList.remove('hidden');
+}
+
+function closeSettings(){
+  document.getElementById('settingsModal').classList.add('hidden');
+}
+
+// 绑定打开按钮
+document.getElementById('openSettingsBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  openSettings();
+});
+
+// 绑定关闭按钮
+document.getElementById('closeSettingsBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  closeSettings();
+});
+
+// 点击弹窗背景关闭
+document.getElementById('settingsModal').addEventListener('click', function(e){
+  if(e.target === document.getElementById('settingsModal')){
+    closeSettings();
+  }
+});
+
+// 强制隐藏弹窗（启动时）
+document.getElementById('settingsModal').classList.add('hidden');
 });  // 背景照片：拍照
   document.getElementById('photoFromCamera').addEventListener('click',function(){
     document.getElementById('bgPhotoInput').onchange = function(ev){
