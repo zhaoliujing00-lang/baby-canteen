@@ -13,25 +13,17 @@
   <style>
     :root{--bg:#fff5f9;--card:#fff;--pink:#ffd1e0;--rose:#f9a8c4;--shadow:0 6px 22px rgba(210,180,190,0.25);--radius:26px;--font:'PingFang SC','Microsoft YaHei',sans-serif}
     *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      background:var(--bg);font-family:var(--font);min-height:100vh;display:flex;
-      justify-content:center;align-items:flex-start;padding:16px;color:#4a3a42;
-      transition:background 0.6s;position:relative;overflow-x:hidden;
-    }
+    body{background:var(--bg);font-family:var(--font);min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:16px;color:#4a3a42;transition:background 0.6s;position:relative;overflow-x:hidden}
     .photo-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background-size:cover;background-position:center;background-repeat:no-repeat;display:none}
     .photo-bg.active{display:block}
     .photo-bg.blur{filter:blur(8px)}
-    .app-container{
-      width:100%;max-width:480px;background:rgba(255,248,250,0.75);
-      backdrop-filter:blur(18px);border-radius:38px;
-      box-shadow:0 20px 45px rgba(180,130,150,0.3), inset 0 1px 10px rgba(255,255,255,0.7);
-      padding:18px 16px;border:2px solid rgba(255,220,230,0.6);position:relative;z-index:1;
-    }
+    .app-container{width:100%;max-width:480px;background:rgba(255,248,250,0.75);backdrop-filter:blur(18px);border-radius:38px;box-shadow:0 20px 45px rgba(180,130,150,0.3),inset 0 1px 10px rgba(255,255,255,0.7);padding:18px 16px;border:2px solid rgba(255,220,230,0.6);position:relative;z-index:1}
     .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
     .title{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,#d47b8c,#b578a6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
     .nav-btns button{background:#fff;border:none;padding:8px 14px;border-radius:30px;font-weight:600;color:#b17a8a;margin-left:6px;cursor:pointer;font-size:0.85rem;box-shadow:0 2px 8px rgba(180,150,160,0.1)}
     .card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:14px;box-shadow:0 3px 10px rgba(180,150,160,0.15);border:2px solid #fbdde5;position:relative}
-    .row{display:flex;justify-content:space-around;text-align:center;flex-wrap:wrap;gap:8px}    .page{display:none}
+    .row{display:flex;justify-content:space-around;text-align:center;flex-wrap:wrap;gap:8px}
+    .page{display:none}
     .page.active{display:block}
     .bro-area{text-align:center;position:relative;padding:10px 0}
     .bro-emoji{font-size:5rem;display:inline-block;cursor:pointer;transition:transform 0.2s;user-select:none;position:relative;z-index:3}
@@ -54,44 +46,35 @@
     .cal-day{padding:10px 4px;border-radius:12px;cursor:pointer;font-weight:600;font-size:0.85rem;background:#fff;transition:0.2s}
     .cal-day.recorded{background:#f9a8c4;color:#fff}
     .cal-day.today{border:2px solid #d47b8c}
-    .skin-card{display:inline-block;width:75px;height:75px;border-radius:20px;margin:5px;cursor:pointer;border:3px solid transparent;text-align:center;line-height:75px;font-size:0.7rem;font-weight:700;position:relative;overflow:hidden}
+    .skin-card{display:inline-block;width:75px;height:75px;border-radius:20px;margin:5px;cursor:pointer;border:3px solid transparent;text-align:center;line-height:75px;font-size:0.7rem;font-weight:700}
     .skin-card.selected{border-color:#d47b8c}
     .skin-card.locked{opacity:0.5}
+    .effect-option{display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;cursor:pointer;border:2px solid transparent;font-size:0.85rem;background:#fff;transition:0.2s}
+    .effect-option.selected{border-color:#f9a8c4;background:#fff0f5}
     .coin-display{background:#fff;padding:6px 14px;border-radius:30px;font-weight:700;color:#d4a017;display:inline-block;margin-bottom:10px}
     .secret-btn{position:fixed;bottom:20px;right:20px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.5);border:1px dashed #f9a8c4;cursor:pointer;font-size:0.7rem;z-index:50;opacity:0.5;transition:0.3s}
     .secret-btn:active{opacity:1;background:#fff}
-    .settings-btn{background:#fff;border:none;padding:6px 10px;border-radius:30px;font-weight:600;color:#b17a8a;cursor:pointer;font-size:0.85rem;box-shadow:0 2px 8px rgba(180,150,160,0.1)}
-    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:100;display:flex;align-items:center;justify-content:center}
-    .modal-sheet{background:#fffef9;border-radius:28px;padding:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto;box-shadow:0 10px 30px rgba(0,0,0,0.2);text-align:center}
-    .modal-sheet h3{margin-bottom:12px;color:#4a3a42}
-    .modal-sheet select,.modal-sheet input[type="range"]{margin:6px 0;width:100%}
-    .modal-sheet button{margin:6px 4px;background:#f9a8c4;border:none;color:#fff;font-weight:700;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:0.85rem}
-    .modal-sheet .close-btn{background:#ddd;color:#555}
-    .effect-option{display:inline-block;padding:8px 12px;margin:4px;border-radius:20px;cursor:pointer;border:2px solid transparent;font-size:0.85rem;background:#fff;transition:0.2s}
-    .effect-option.selected{border-color:#f9a8c4;background:#fff0f5}
     input[type="number"]{width:60px;padding:4px;border-radius:20px;border:1.5px solid #f0c8d8;text-align:center;font-weight:700}
     .back-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;padding:0 8px}
-    .effect-label{font-size:0.8rem;color:#b17a8a;margin-bottom:4px;font-weight:700}
+    .setting-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #f3d8e2}
+    .setting-label{font-weight:600;font-size:0.9rem}
   </style>
-</head><body id="mainBody">
-<!-- 自定义照片背景层 -->
+</head>
+<body id="mainBody">
 <div class="photo-bg" id="photoBg"></div>
 
 <div class="app-container" id="app">
-  <!-- ====== 页面1：主汇总页 ====== -->
+  <!-- ====== 主页 ====== -->
   <div class="page active" id="page-home">
     <div class="header">
       <span class="title">🍰 宝宝小食堂</span>
       <div class="nav-btns">
-        <button class="settings-btn" id="openSettingsBtn">⚙️</button>
+        <button id="goSettingsBtn">⚙️</button>
         <button id="goCalendarBtn">📅 日历</button>
         <button id="goShopBtn">🎨 皮肤</button>
       </div>
     </div>
-    <div class="bro-area" id="broArea">
-      <div class="bro-emoji" id="broEmoji">🧸</div>
-      <div style="color:#b17a8a;font-size:0.8rem">戳戳哥哥有惊喜~</div>
-    </div>
+    <div class="bro-area"><div class="bro-emoji" id="broEmoji">🧸</div><div style="color:#b17a8a;font-size:0.8rem">戳戳哥哥有惊喜~</div></div>
     <div class="coin-display">🪙 <span id="coinCount">0</span> 金币</div>
     <div class="card row">
       <div><strong>本月记录</strong><br><span id="monthDays">0</span> 天</div>
@@ -102,7 +85,7 @@
     <div class="bro-bubble"><span style="font-size:1.5rem">🧸</span><span id="homeBroText">戳戳哥哥的小熊，他会很开心哦~</span></div>
   </div>
 
-  <!-- ====== 页面2：日历页 ====== -->
+  <!-- ====== 日历页 ====== -->
   <div class="page" id="page-calendar">
     <div class="header"><button class="back-btn" id="calBackBtn">←</button><span class="title">📅 本月日历</span><span></span></div>
     <div style="text-align:center;margin-bottom:10px;font-weight:700" id="calMonthLabel"></div>
@@ -113,7 +96,7 @@
     </div>
   </div>
 
-  <!-- ====== 页面3：记录页 ====== -->
+  <!-- ====== 记录页 ====== -->
   <div class="page" id="page-record">
     <div class="header"><button class="back-btn" id="recBackBtn">←</button><span class="title">📝 记录三餐</span><span id="recDateLabel"></span></div>
     <div class="card row">
@@ -125,7 +108,7 @@
     <div id="mealsGrid"></div>
   </div>
 
-  <!-- ====== 页面4：皮肤商店 ====== -->
+  <!-- ====== 皮肤商店 ====== -->
   <div class="page" id="page-shop">
     <div class="header"><button class="back-btn" id="shopBackBtn">←</button><span class="title">🎨 皮肤商店</span><span></span></div>
     <div class="coin-display">🪙 <span id="shopCoinCount">0</span> 金币</div>
@@ -133,29 +116,35 @@
     <div class="bro-bubble"><span style="font-size:1.5rem">🧸</span><span id="shopBroText">金币可以通过每日打卡获得哦~</span></div>
   </div>
 
-  <!-- ====== 设置弹窗 ====== -->
-  <div class="modal-overlay hidden" id="settingsModal">
-    <div class="modal-sheet">
-      <h3>⚙️ 自定义设置</h3>
-      <div class="effect-label">📷 背景照片</div>
-      <button id="photoFromCamera">📷 拍照</button>
-      <button id="photoFromGallery">🖼️ 相册</button>
-      <button id="photoRemove" class="close-btn">🗑️ 移除照片</button>
-      <div class="effect-label" style="margin-top:8px">🌫️ 照片模式</div>
-      <select id="photoMode"><option value="clear">全屏清晰</option><option value="blur">柔和模糊</option></select>
-      <div class="effect-label" style="margin-top:8px">✨ 点击特效</div>
-      <div id="effectList"></div>
-      <button id="closeSettingsBtn" class="close-btn" style="margin-top:12px">关闭</button>
+  <!-- ====== 设置页 ====== -->
+  <div class="page" id="page-settings">
+    <div class="header"><button class="back-btn" id="settingsBackBtn">←</button><span class="title">⚙️ 设置</span><span></span></div>
+    <div class="card">
+      <div class="setting-row"><span class="setting-label">📷 背景照片</span></div>
+      <button id="photoFromCamera" style="width:100%;margin:4px 0">📷 拍照</button>
+      <button id="photoFromGallery" style="width:100%;margin:4px 0">🖼️ 从相册选择</button>
+      <button id="photoRemove" style="width:100%;margin:4px 0;background:#ddd;color:#555">🗑️ 移除照片</button>
+    </div>
+    <div class="card">
+      <div class="setting-row"><span class="setting-label">🌫️ 照片模式</span></div>
+      <select id="photoMode" style="width:100%;padding:8px;border-radius:16px;border:1.5px solid #f0c8d8;font-size:0.85rem;background:#fffbfc">
+        <option value="clear">全屏清晰</option>
+        <option value="blur">柔和模糊</option>
+      </select>
+    </div>
+    <div class="card">
+      <div class="setting-row"><span class="setting-label">✨ 点击特效</span></div>
+      <div id="effectList" style="text-align:center"></div>
     </div>
   </div>
 </div>
-<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
-<input type="file" id="galleryInput" accept="image/*" style="display:none">
+
 <input type="file" id="bgPhotoInput" accept="image/*" style="display:none">
 <input type="file" id="bgGalleryInput" accept="image/*" style="display:none">
-<button class="secret-btn" id="secretCoinBtn" title="哥哥的小金库">🐾</button><script>
+<button class="secret-btn" id="secretCoinBtn">🐾</button>
+<script>
 (function(){
-  const STORAGE_KEY = 'canteen_v6';
+  const STORAGE_KEY = 'canteen_v7';
   let appData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
   if(!appData.days) appData.days = {};
   if(!appData.coins) appData.coins = 0;
@@ -174,7 +163,7 @@
     return appData.days[d];
   }
 
-  // 六款简洁皮肤
+  // 皮肤
   const skins = [
     {id:'default',name:'奶油粉',bg:'linear-gradient(145deg,#ffecf2,#fde4ee 40%,#f2e2fa)',price:0,emoji:'🌸'},
     {id:'starry',name:'星空蓝',bg:'linear-gradient(145deg,#1a1a3e,#2d2d5e 40%,#1a1a4e)',price:50,emoji:'🌟'},
@@ -184,7 +173,7 @@
     {id:'ocean',name:'海洋蓝',bg:'linear-gradient(145deg,#e0f7fa,#b2ebf2 40%,#80deea)',price:100,emoji:'🌊'}
   ];
 
-  // 点击特效定义
+  // 点击特效
   const effects = [
     {id:'hearts',name:'💖 爱心',type:'pattern',emoji:'💖'},
     {id:'stars',name:'⭐ 星光',type:'pattern',emoji:'⭐'},
@@ -203,57 +192,30 @@
     {id:'sunsetp',name:'🌅 暖阳粒子',type:'particle',color:'#ff9800'},
     {id:'diamond',name:'💎 钻石粒子',type:'particle',color:'#fff'},
     {id:'rainbow',name:'🌈 彩虹粒子',type:'particle',color:'random'},
-    {id:'none',name:'🚫 关闭',type:'none',emoji:''}
+    {id:'none',name:'🚫 关闭',type:'none'}
   ];
 
   // 份量预设
   const portionPresets = [
-    {label:'🍜 正常份',value:1},
-    {label:'🥢 半份',value:0.5},
-    {label:'一大口',value:30},
-    {label:'几筷子',value:15},
-    {label:'一小片',value:5},
-    {label:'一小撮',value:3},
+    {label:'🍜 正常份',value:1},{label:'🥢 半份',value:0.5},
+    {label:'一大口',value:30},{label:'几筷子',value:15},{label:'一小片',value:5},{label:'一小撮',value:3}
   ];
 
-  // 份量克数换算
-  function getPortionGrams(standardGrams, portionValue){
-    if(portionValue <= 1 && portionValue > 0) return Math.round(standardGrams * portionValue);
-    return portionValue; // 已经是克数
-  }
-
-  // 小熊话语库（40+句）
+  // 哥哥话语库
   const broQuotes = [
     '今天也要好好吃饭哦~','戳戳哥哥的小熊，他会很开心~','宝宝最棒了！','记得记录每一餐呀','哥哥一直陪着你',
     '今天有好好喝水吗？','宝宝笑起来最好看了','累了就歇会儿，哥哥陪你','你记录的样子真可爱','每一餐都值得被记住',
-    '哥哥的小熊为你加油','今天吃蔬菜了吗？','你是哥哥最珍贵的宝贝','看到你开心哥哥就开心','不要饿着自己哦',
-    '今天天气真好，适合吃好吃的','宝宝又坚持了一天，真厉害','哥哥最喜欢你了','好好吃饭才能元气满满','你的小食堂永远有位置',
-    '今天想吃什么？哥哥帮你记','宝宝的努力哥哥都看到了','累了的话，哥哥给你靠','每天打卡的宝宝最乖了','你是全世界最可爱的小朋友',
-    '今天也要元气满满哦','哥哥的小熊在对你笑呢','宝宝想吃什么就吃什么','每一口都是对自己的爱','你今天真好看',
-    '哥哥好想你呀','宝宝最近越来越棒了','看到你记录哥哥就放心了','你的快乐是哥哥最重要的事','哥哥永远做你的后盾',
-    '今天有没有吃水果？','宝宝是哥哥的骄傲','无论发生什么哥哥都在','你的小食堂永远亮着灯','哥哥等你回家吃饭',
-    '今天也要开心呀','宝宝是世界上最好的宝宝','累了就睡，饿了就吃','哥哥的小熊守护着你','每一天都是新的开始',
+    '哥哥的小熊为你加油','今天吃蔬菜了吗？','你是哥哥最珍贵的宝贝','不要饿着自己哦',
+    '今天天气真好，适合吃好吃的','宝宝又坚持了一天，真厉害','哥哥最喜欢你了',
+    '好好吃饭才能元气满满','你的小食堂永远有位置','今天也要元气满满哦',
+    '哥哥的小熊在对你笑呢','每一口都是对自己的爱','你今天真好看','哥哥好想你呀',
+    '宝宝最近越来越棒了','你的快乐是哥哥最重要的事','哥哥永远做你的后盾',
+    '今天有没有吃水果？','宝宝是哥哥的骄傲','无论发生什么哥哥都在','你的小食堂永远亮着灯',
+    '哥哥等你回家吃饭','今天也要开心呀','宝宝是世界上最好的宝宝',
+    '累了就睡，饿了就吃','哥哥的小熊守护着你','每一天都是新的开始',
     '你记录的每一餐都是爱自己','哥哥最喜欢陪你聊天了','宝宝今天真可爱','记得早睡哦','明天也要一起加油'
   ];
-
-  function randomQuote(){
-    return broQuotes[Math.floor(Math.random() * broQuotes.length)];
-  }
-
-  // 食物数据库
-  const baseIngredients = {
-    '米饭':{kcal:116,g:150},'馒头':{kcal:223,g:100},'面条':{kcal:137,g:200},'鸡蛋':{kcal:144,g:50},
-    '牛奶':{kcal:54,g:250},'苹果':{kcal:53,g:200},'香蕉':{kcal:93,g:120},'鸡胸肉':{kcal:133,g:150},
-    '牛排':{kcal:250,g:200},'番茄':{kcal:18,g:150},'茄子':{kcal:23,g:150},'土豆':{kcal:81,g:150},
-    '黄瓜':{kcal:16,g:200},'胡萝卜':{kcal:37,g:100},'西兰花':{kcal:34,g:100},'豆腐':{kcal:60,g:150},
-    '猪肉(瘦)':{kcal:143,g:100},'牛肉':{kcal:125,g:100},'食用油':{kcal:884,g:10},'白糖':{kcal:400,g:5}
-  };
-  const recipeDB = {
-    '番茄炒蛋':[{i:'番茄',q:1.5},{i:'鸡蛋',q:2},{i:'食用油',q:1},{i:'白糖',q:0.5}],
-    '肉末茄子':[{i:'茄子',q:2},{i:'猪肉(瘦)',q:0.8},{i:'食用油',q:1.5}],
-    '豚骨拉面':[{i:'面条',q:2},{i:'猪肉(瘦)',q:0.5},{i:'鸡蛋',q:1}],
-    '麻婆豆腐':[{i:'豆腐',q:2},{i:'猪肉(瘦)',q:0.6},{i:'食用油',q:1}]
-  };
+  function randomQuote(){ return broQuotes[Math.floor(Math.random() * broQuotes.length)]; }
 
   function applySkin(skinId){
     const skin = skins.find(s=>s.id===skinId) || skins[0];
@@ -267,117 +229,70 @@
     if(appData.bgPhoto){
       bg.style.backgroundImage = `url(${appData.bgPhoto})`;
       bg.classList.add('active');
-      if(appData.photoMode === 'blur') bg.classList.add('blur');
-      else bg.classList.remove('blur');
-    } else {
-      bg.classList.remove('active');
-    }
+      if(appData.photoMode === 'blur') bg.classList.add('blur'); else bg.classList.remove('blur');
+    } else { bg.classList.remove('active'); }
   }
 
   function switchPage(pageId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById('page-'+pageId).classList.add('active');
-  }// ========== 主页渲染 ==========
-function renderHome(){
-  const todayDay = getDay(today);
-  const allMeals = [...todayDay.foods.breakfast,...todayDay.foods.lunch,...todayDay.foods.dinner,...todayDay.foods.snack];
-  const todayKcal = allMeals.reduce((s,f)=>s+f.kcal,0);
-  document.getElementById('homeKcal').textContent = todayKcal;
-  const now = new Date();
-  const year = now.getFullYear(), month = now.getMonth()+1;
-  let monthDays=0, streak=0;
-  Object.keys(appData.days).forEach(d=>{
-    if(d.startsWith(`${year}-${String(month).padStart(2,'0')}`)){
-      const day = appData.days[d];
-      if([...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0) monthDays++;
-    }
-  });
-  let checkDate = new Date();
-  while(true){
-    const ds = checkDate.toISOString().split('T')[0];
-    const day = appData.days[ds];
-    if(day && [...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0) streak++;
-    else break;
-    checkDate.setDate(checkDate.getDate()-1);
   }
-  document.getElementById('monthDays').textContent = monthDays;
-  document.getElementById('streakDays').textContent = streak;
-  document.getElementById('coinCount').textContent = appData.coins;
-  document.getElementById('shopCoinCount').textContent = appData.coins;
-  document.getElementById('homeBroText').textContent = randomQuote();
-}
 
-// ========== 日历渲染 ==========
-function renderCalendar(){
-  document.getElementById('calMonthLabel').textContent = `${calYear}年 ${calMonth}月`;
-  const grid = document.getElementById('calendarGrid');
-  const daysInMonth = new Date(calYear,calMonth,0).getDate();
-  const firstDay = new Date(calYear,calMonth-1,1).getDay();
-  let html = '';
-  ['日','一','二','三','四','五','六'].forEach(d=>html+=`<div style="font-weight:700;color:#b17a8a">${d}</div>`);
-  for(let i=0;i<firstDay;i++) html+='<div></div>';
-  for(let d=1;d<=daysInMonth;d++){
-    const ds = `${calYear}-${String(calMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const day = appData.days[ds];
-    const recorded = day && [...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0;
-    const isToday = ds===today;
-    html+=`<div class="cal-day${recorded?' recorded':''}${isToday?' today':''}" data-date="${ds}">${d}</div>`;
-  }
-  grid.innerHTML = html;
-  grid.onclick = function(e){
-    const el = e.target.closest('.cal-day');
-    if(!el) return;
-    currentRecordDate = el.dataset.date;
-    switchPage('record');
-    renderRecord();
-  };
-}// ========== 记录页 ==========
-function smartEstimate(query, portion){
-  const lower = query.toLowerCase();
-  const foodTypes = {'米':116,'面':137,'饭':116,'饼':250,'猪':250,'牛':200,'鸡':150,'鱼':100,'虾':90,'菜':25,'蔬':25,'菇':25,'豆':80,'茄':23,'瓜':16,'果':55,'奶':54,'蛋':144,'油':884,'糖':400};
-  const cookingMethods = {'蒸':1.0,'煮':1.0,'清':1.0,'炒':1.5,'烧':1.6,'焖':1.5,'炖':1.4,'炸':2.2,'酥':2.0,'红':1.7,'酱':1.5,'卤':1.4,'烤':1.6};
-  let baseKcal=150;
-  for(let[k,v]of Object.entries(foodTypes)){if(lower.includes(k)){baseKcal=v;break;}}
-  let m=1.4;
-  for(let[k,v]of Object.entries(cookingMethods)){if(lower.includes(k)){m=v;break;}}
-  const kcalPer100g=Math.round(baseKcal*m);
-  const grams=200;
-  return{name:query,kcal:Math.round(kcalPer100g*grams/100),grams,source:'🤖'};
-}
-
-function calculateFood(query, portionValue, standardGrams){
-  const exactMatch = baseIngredients[query];
-  if(exactMatch){
-    const grams = getPortionGrams(exactMatch.g, portionValue);
-    return{name:query,kcal:Math.round(exactMatch.kcal*grams/100),grams,source:'📊'};
-  }
-  const recipe = recipeDB[query];
-  if(recipe){
-    let tk=0,tg=0;
-    recipe.forEach(item=>{
-      const ing=baseIngredients[item.i];
-      if(ing){const g=getPortionGrams(ing.g*item.q, portionValue);tg+=g;tk+=Math.round(ing.kcal*g/100);}
+  // 主页渲染
+  function renderHome(){
+    const todayDay = getDay(today);
+    const allMeals = [...todayDay.foods.breakfast,...todayDay.foods.lunch,...todayDay.foods.dinner,...todayDay.foods.snack];
+    const todayKcal = allMeals.reduce((s,f)=>s+f.kcal,0);
+    document.getElementById('homeKcal').textContent = todayKcal;
+    const now = new Date(); const year = now.getFullYear(), month = now.getMonth()+1;
+    let monthDays=0, streak=0;
+    Object.keys(appData.days).forEach(d=>{
+      if(d.startsWith(`${year}-${String(month).padStart(2,'0')}`)){
+        const day = appData.days[d];
+        if([...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0) monthDays++;
+      }
     });
-    return{name:query,kcal:tk,grams:Math.round(tg),source:'🧑‍🍳'};
-  }
-  return smartEstimate(query, portionValue);
-}
-
-async function searchOnlineFood(query){
-  try{
-    const r=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&json=1&page_size=3`);
-    const d=await r.json();
-    if(d.products&&d.products.length>0){
-      return d.products.map(p=>{
-        const kcal=p.nutriments?.['energy-kcal_100g'];if(!kcal)return null;
-        const ss=p.serving_size?parseFloat(p.serving_size):100;
-        return{name:p.product_name||query,kcal:Math.round(kcal*ss/100),grams:ss,source:'🌐'};
-      }).filter(Boolean);
+    let checkDate = new Date();
+    while(true){
+      const ds = checkDate.toISOString().split('T')[0];
+      const day = appData.days[ds];
+      if(day && [...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0) streak++;
+      else break;
+      checkDate.setDate(checkDate.getDate()-1);
     }
-  }catch(e){}
-  return[];
-}
+    document.getElementById('monthDays').textContent = monthDays;
+    document.getElementById('streakDays').textContent = streak;
+    document.getElementById('coinCount').textContent = appData.coins;
+    document.getElementById('shopCoinCount').textContent = appData.coins;
+    document.getElementById('homeBroText').textContent = randomQuote();
+  }
 
+  // 日历渲染
+  function renderCalendar(){
+    document.getElementById('calMonthLabel').textContent = `${calYear}年 ${calMonth}月`;
+    const grid = document.getElementById('calendarGrid');
+    const daysInMonth = new Date(calYear,calMonth,0).getDate();
+    const firstDay = new Date(calYear,calMonth-1,1).getDay();
+    let html = '';
+    ['日','一','二','三','四','五','六'].forEach(d=>html+=`<div style="font-weight:700;color:#b17a8a">${d}</div>`);
+    for(let i=0;i<firstDay;i++) html+='<div></div>';
+    for(let d=1;d<=daysInMonth;d++){
+      const ds = `${calYear}-${String(calMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const day = appData.days[ds];
+      const recorded = day && [...day.foods.breakfast,...day.foods.lunch,...day.foods.dinner,...day.foods.snack].length>0;
+      const isToday = ds===today;
+      html+=`<div class="cal-day${recorded?' recorded':''}${isToday?' today':''}" data-date="${ds}">${d}</div>`;
+    }
+    grid.innerHTML = html;
+    grid.onclick = function(e){
+      const el = e.target.closest('.cal-day');
+      if(!el) return;
+      currentRecordDate = el.dataset.date;
+      switchPage('record');
+      renderRecord();
+    };
+  }
+  // 记录页渲染
 function renderRecord(){
   const day = getDay(currentRecordDate);
   const w = day.weight||52;
@@ -404,7 +319,7 @@ function renderRecord(){
     const portionOptions = portionPresets.map(p=>`<option value="${p.value}">${p.label}</option>`).join('');
     card.innerHTML=`
       <div class="meal-header"><strong>${meal.title}</strong><span class="meal-kcal">🔥 ${mkcal} kcal</span></div>
-      <div>${meal.foods.map((f,i)=>`<div class="food-item"><span>🍽 ${f.name} <small>${f.source||''}</small> (${f.grams}g)</span><span>${f.kcal} kcal <button class="edit-btn" data-meal="${meal.id}" data-idx="${i}">✏️</button><button class="del-btn" data-meal="${meal.id}" data-idx="${i}">✕</button></span></div>`).join('')||'<div style="color:#aaa;font-size:0.8rem">暂无食物</div>'}</div>
+      <div>${meal.foods.map((f,i)=>`<div class="food-item"><span>🍽 ${f.name} (${f.grams}g)</span><span>${f.kcal} kcal <button class="del-btn" data-meal="${meal.id}" data-idx="${i}">✕</button></span></div>`).join('')||'<div style="color:#aaa;font-size:0.8rem">暂无食物</div>'}</div>
       <div class="add-area">
         <input type="text" class="food-search" placeholder="搜索食物">
         <select class="portion-select">${portionOptions}</select>
@@ -412,74 +327,57 @@ function renderRecord(){
       </div>`;
     grid.appendChild(card);
     card.querySelectorAll('.del-btn').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();getDay(currentRecordDate).foods[this.dataset.meal].splice(parseInt(this.dataset.idx),1);save();renderRecord();});});
-    card.querySelectorAll('.edit-btn').forEach(b=>{b.addEventListener('click',function(e){e.stopPropagation();const idx=parseInt(this.dataset.idx);const food=getDay(currentRecordDate).foods[this.dataset.meal][idx];const newKcal=prompt('修改热量 (千卡)',food.kcal);if(newKcal){food.kcal=parseInt(newKcal);food.source='✏️';save();renderRecord();}});});
-    card.querySelector('.add-btn').addEventListener('click', async function(e){
+    card.querySelector('.add-btn').addEventListener('click', function(e){
       e.stopPropagation();
       const query = card.querySelector('.food-search').value.trim();
       if(!query){alert('请输入食物名称');return;}
       const portionValue = parseFloat(card.querySelector('.portion-select').value);
-      const localResult = calculateFood(query, portionValue, 200);
-      const onlineResults = await searchOnlineFood(query);
-      if(onlineResults.length>0){
-        const of=onlineResults[0];
-        const grams = getPortionGrams(of.grams, portionValue);
-        getDay(currentRecordDate).foods[this.dataset.meal].push({name:of.name,kcal:Math.round(of.kcal*(grams/of.grams)),grams,source:of.source});
-      }else{
-        getDay(currentRecordDate).foods[this.dataset.meal].push({name:localResult.name,kcal:localResult.kcal,grams:localResult.grams,source:localResult.source});
-      }
+      const grams = portionValue <= 1 ? Math.round(200 * portionValue) : portionValue;
+      const kcal = Math.round(grams * 1.2);
+      getDay(currentRecordDate).foods[this.dataset.meal].push({name:query,kcal:kcal,grams:grams});
       if(!getDay(currentRecordDate).checkedIn){getDay(currentRecordDate).checkedIn=true;appData.coins+=5;}
       save();renderRecord();
     });
   });
   document.getElementById('currentKcal').textContent = totalKcal;
-}// ========== 皮肤商店 ==========
+}
+  // 皮肤商店
 function renderShop(){
   document.getElementById('shopCoinCount').textContent = appData.coins;
   const list = document.getElementById('skinList');
   list.innerHTML = skins.map(s=>{
-    const owned=appData.skins.owned.includes(s.id);
-    const active=appData.skins.active===s.id;
+    const owned=appData.skins.owned.includes(s.id), active=appData.skins.active===s.id;
     return`<div class="skin-card${active?' selected':''}${!owned?' locked':''}" style="background:${s.bg}" data-id="${s.id}"><div>${s.emoji}</div><div style="font-size:0.65rem">${s.name}</div><div style="font-size:0.6rem">${owned?(active?'使用中':'已拥有'):'🪙'+s.price}</div></div>`;
   }).join('');
   list.onclick=function(e){
     const el=e.target.closest('.skin-card');if(!el)return;
     const id=el.dataset.id;const skin=skins.find(s=>s.id===id);if(!skin)return;
     if(!appData.skins.owned.includes(id)){
-      if(appData.coins>=skin.price){appData.coins-=skin.price;appData.skins.owned.push(id);save();applySkin(id);renderShop();document.getElementById('shopBroText').textContent='皮肤已兑换！好漂亮~';}
-      else{document.getElementById('shopBroText').textContent='金币不够哦，每天打卡可以赚金币~';}
+      if(appData.coins>=skin.price){appData.coins-=skin.price;appData.skins.owned.push(id);save();applySkin(id);renderShop();document.getElementById('shopBroText').textContent='皮肤已兑换！';}
+      else{document.getElementById('shopBroText').textContent='金币不够哦~';}
     }else{applySkin(id);renderShop();document.getElementById('shopBroText').textContent='皮肤已切换！';}
   };
 }
 
-// ========== 设置弹窗 ==========
+// 设置页 - 特效列表
 function renderEffectList(){
   const list = document.getElementById('effectList');
-  list.innerHTML = effects.map(e=>{
-    const selected = appData.clickEffect === e.id;
-    return `<span class="effect-option${selected?' selected':''}" data-id="${e.id}">${e.name}</span>`;
-  }).join('');
+  list.innerHTML = effects.map(e=>`<span class="effect-option${appData.clickEffect===e.id?' selected':''}" data-id="${e.id}">${e.name}</span>`).join('');
   list.onclick = function(e){
-    const el = e.target.closest('.effect-option');
-    if(!el) return;
-    appData.clickEffect = el.dataset.id;
-    save();
-    renderEffectList();
+    const el = e.target.closest('.effect-option'); if(!el) return;
+    appData.clickEffect = el.dataset.id; save(); renderEffectList();
   };
 }
 
-function openSettings(){
+// 设置页 - 初始化
+function initSettingsPage(){
   document.getElementById('photoMode').value = appData.photoMode;
   renderEffectList();
-  document.getElementById('settingsModal').classList.remove('hidden');
 }
 
-function closeSettings(){
-  document.getElementById('settingsModal').classList.add('hidden');
-}
-
-// ========== 点击特效 ==========
+// 点击特效
 document.addEventListener('click',function(e){
-  if(e.target.closest('button')||e.target.closest('input')||e.target.closest('select')||e.target.closest('.modal-overlay')) return;
+  if(e.target.closest('button')||e.target.closest('input')||e.target.closest('select')) return;
   if(appData.clickEffect === 'none') return;
   const eff = effects.find(ef=>ef.id===appData.clickEffect);
   if(!eff) return;
@@ -500,162 +398,56 @@ document.addEventListener('click',function(e){
     setTimeout(()=>particle.remove(),800);
   }
 });
+    // ========== 事件绑定 ==========
+  // 哥哥小熊
+  document.getElementById('broEmoji').addEventListener('click', function(){
+    const heart=document.createElement('span'); heart.textContent='💖'; heart.className='heart-particle';
+    const rect=this.getBoundingClientRect(); heart.style.left=(rect.left+rect.width/2-12)+'px'; heart.style.top=(rect.top-10)+'px';
+    document.body.appendChild(heart); setTimeout(()=>heart.remove(),1500);
+    document.getElementById('homeBroText').textContent = randomQuote();
+  });
 
-// ========== 事件绑定 ==========
-document.getElementById('broEmoji').addEventListener('click',function(e){
-  const heart=document.createElement('span');
-  heart.textContent=['💕','💖','💗','💝','✨'][Math.floor(Math.random()*5)];
-  heart.className='heart-particle';
-  const rect=this.getBoundingClientRect();
-  heart.style.left=(rect.left+rect.width/2-12)+'px';
-  heart.style.top=(rect.top-10)+'px';
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),1500);
-  document.getElementById('homeBroText').textContent = randomQuote();
-});
+  // 页面切换
+  document.getElementById('goCalendarBtn').addEventListener('click',()=>{switchPage('calendar');renderCalendar();});
+  document.getElementById('goShopBtn').addEventListener('click',()=>{switchPage('shop');renderShop();});
+  document.getElementById('goRecordBtn').addEventListener('click',()=>{currentRecordDate=today;switchPage('record');renderRecord();});
+  document.getElementById('goSettingsBtn').addEventListener('click',()=>{switchPage('settings');initSettingsPage();});
+  document.getElementById('calBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
+  document.getElementById('recBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
+  document.getElementById('shopBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
+  document.getElementById('settingsBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
+  document.getElementById('prevMonthBtn').addEventListener('click',()=>{if(calMonth===1){calMonth=12;calYear--}else calMonth--;renderCalendar();});
+  document.getElementById('nextMonthBtn').addEventListener('click',()=>{if(calMonth===12){calMonth=1;calYear++}else calMonth++;renderCalendar();});
+  document.getElementById('weightInput').addEventListener('input',function(){getDay(currentRecordDate).weight=parseFloat(this.value)||52;save();renderRecord();});
 
-document.getElementById('goCalendarBtn').addEventListener('click',()=>{switchPage('calendar');renderCalendar();});
-document.getElementById('goShopBtn').addEventListener('click',()=>{switchPage('shop');renderShop();});
-document.getElementById('goRecordBtn').addEventListener('click',()=>{currentRecordDate=today;switchPage('record');renderRecord();});
-document.getElementById('prevMonthBtn').addEventListener('click',()=>{if(calMonth===1){calMonth=12;calYear--}else calMonth--;renderCalendar();});
-document.getElementById('nextMonthBtn').addEventListener('click',()=>{if(calMonth===12){calMonth=1;calYear++}else calMonth++;renderCalendar();});
-document.getElementById('calBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
-document.getElementById('weightInput').addEventListener('input',function(){getDay(currentRecordDate).weight=parseFloat(this.value)||52;save();renderRecord();});
-document.getElementById('recBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
-document.getElementById('shopBackBtn').addEventListener('click',()=>{switchPage('home');renderHome();});
-document.getElementById('openSettingsBtn').addEventListener('click',openSettings);
-document.getElementById('closeSettingsBtn').addEventListener('click',closeSettings);
-document.getElementById('settingsModal').addEventListener('click',function(e){if(e.target===this)closeSettings();});
-// 照片模式切换
-document.getElementById('photoMode').addEventListener('change',function(){
-  appData.photoMode = this.value;
-  save();
-  applyBgPhoto();
-});
-
-// ========== 设置弹窗控制（修复版） ==========
-function openSettings(){
-  document.getElementById('photoMode').value = appData.photoMode;
-  renderEffectList();
-  document.getElementById('settingsModal').classList.remove('hidden');
-}
-
-function closeSettings(){
-  document.getElementById('settingsModal').classList.add('hidden');
-}
-
-// 强制隐藏弹窗，确保启动时不会弹出来
-document.getElementById('settingsModal').classList.add('hidden');
-
-// 绑定打开按钮
-document.getElementById('openSettingsBtn').addEventListener('click', function(e){
-  e.stopPropagation();
-  openSettings();
-});
-
-// 绑定关闭按钮
-document.getElementById('closeSettingsBtn').addEventListener('click', function(e){
-  e.stopPropagation();
-  closeSettings();
-});
-
-// 点击弹窗背景灰色区域也能关闭
-document.getElementById('settingsModal').addEventListener('click', function(e){
-  if(e.target === document.getElementById('settingsModal')){
-    closeSettings();
-  }
-});
-
-// ========== 设置弹窗控制 ==========
-function openSettings(){
-  document.getElementById('photoMode').value = appData.photoMode;
-  renderEffectList();
-  document.getElementById('settingsModal').classList.remove('hidden');
-}
-
-function closeSettings(){
-  document.getElementById('settingsModal').classList.add('hidden');
-}
-
-// 绑定打开按钮
-document.getElementById('openSettingsBtn').addEventListener('click', function(e){
-  e.stopPropagation();
-  openSettings();
-});
-
-// 绑定关闭按钮
-document.getElementById('closeSettingsBtn').addEventListener('click', function(e){
-  e.stopPropagation();
-  closeSettings();
-});
-
-// 点击弹窗背景关闭
-document.getElementById('settingsModal').addEventListener('click', function(e){
-  if(e.target === document.getElementById('settingsModal')){
-    closeSettings();
-  }
-});
-
-// 强制隐藏弹窗（启动时）
-document.getElementById('settingsModal').classList.add('hidden');
-});  
-
-    // 背景照片：拍照
-  document.getElementById('photoFromCamera').addEventListener('click',function(){
+  // 背景照片
+  document.getElementById('photoFromCamera').addEventListener('click', function(){
     document.getElementById('bgPhotoInput').onchange = function(ev){
-      const file = ev.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e){
-        appData.bgPhoto = e.target.result;
-        save();
-        applyBgPhoto();
-      };
+      const file = ev.target.files[0]; if(!file) return;
+      const reader = new FileReader(); reader.onload = function(e){ appData.bgPhoto = e.target.result; save(); applyBgPhoto(); };
       reader.readAsDataURL(file);
-    };
-    document.getElementById('bgPhotoInput').click();
+    }; document.getElementById('bgPhotoInput').click();
   });
-
-  // 背景照片：相册
-  document.getElementById('photoFromGallery').addEventListener('click',function(){
+  document.getElementById('photoFromGallery').addEventListener('click', function(){
     document.getElementById('bgGalleryInput').onchange = function(ev){
-      const file = ev.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e){
-        appData.bgPhoto = e.target.result;
-        save();
-        applyBgPhoto();
-      };
+      const file = ev.target.files[0]; if(!file) return;
+      const reader = new FileReader(); reader.onload = function(e){ appData.bgPhoto = e.target.result; save(); applyBgPhoto(); };
       reader.readAsDataURL(file);
-    };
-    document.getElementById('bgGalleryInput').click();
+    }; document.getElementById('bgGalleryInput').click();
   });
+  document.getElementById('photoRemove').addEventListener('click', function(){ appData.bgPhoto = null; save(); applyBgPhoto(); });
+  document.getElementById('photoMode').addEventListener('change', function(){ appData.photoMode = this.value; save(); applyBgPhoto(); });
 
-  // 移除照片
-  document.getElementById('photoRemove').addEventListener('click',function(){
-    appData.bgPhoto = null;
-    save();
-    applyBgPhoto();
-  });
+  // 小金库
+  document.getElementById('secretCoinBtn').addEventListener('click',function(){appData.coins+=100;save();renderHome();alert('🐾 +100金币！');});
 
-  // ========== 哥哥的小金库 ==========
-  document.getElementById('secretCoinBtn').addEventListener('click',function(){
-    appData.coins+=100;
-    save();
-    renderHome();
-    alert('🐾 哥哥偷偷给了你100金币！去买喜欢的皮肤吧~');
-  });
-
-  // ========== PWA ==========
+  // PWA
   const manifest={name:'宝宝小食堂',short_name:'小食堂',start_url:location.href,display:'standalone',background_color:'#fff5f9',theme_color:'#fff5f9',icons:[{src:"data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#ffd1e0"/><text y=".9em" font-size="70" text-anchor="middle" x="50">🍰</text></svg>'),sizes:'100x100',type:'image/svg+xml'}]};
   document.getElementById('pwaManifest').href=URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
 
-  // ========== 启动 ==========
-  applySkin(appData.skins.active);
-  applyBgPhoto();
-  renderHome();
+  // 启动
+  applySkin(appData.skins.active); applyBgPhoto(); renderHome();
 })();
 </script>
 </body>
-</html> 
+</html>
